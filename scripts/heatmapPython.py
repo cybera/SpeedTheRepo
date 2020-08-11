@@ -6,6 +6,7 @@ import numpy as np
 from scipy.interpolate import griddata
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib as mpl
+import os
 
 class NetworkHeatmaps():
     '''
@@ -125,17 +126,23 @@ class NetworkHeatmaps():
         self.zi[self.zi > 50 ] = 50
     
        
-    def makePlot(self, data, patch, box = None, title=None, file=None, save=False):
+    def makePlot(self, data, patch, title=None, file=None, save=False, underlay=None,
+                 alpha = 0.5, linewidth = 1, figsize = (5,5)):
         '''
         Creates the plots
         '''
         
-        fig, ax = plt.subplots(figsize=(15,15))
+        fig, ax = plt.subplots(figsize=figsize)
         ax.axis('scaled')
         bound = np.linspace(0, 50, 13)
+        
+        if isinstance(underlay, gpd.GeoDataFrame):
+            underlay.plot(ax=ax, facecolor = 'white', linewidth= linewidth, edgecolor='black')
+
+
         CS = ax.contourf(self.xi,self.yi,self.zi,
                          cmap=plt.cm.jet, vmin=0, vmax=50, 
-                         alpha=.5, levels=bound)
+                         alpha=alpha, levels=bound)
         
         self.makePatch(patch)
         self.res_difference.plot(ax=ax, color = 'white')
@@ -154,16 +161,17 @@ class NetworkHeatmaps():
         ax.set_xlabel("Longitude", size = 24)
         ax.set_ylabel("Latitude", size = 24)
 
-        if box:
-            ax.set_xlim([patch.bounds['minx'].values[0] -0.5, patch.bounds['maxx'].values[0] +0.5])
-            ax.set_ylim([patch.bounds['miny'].values[0] -0.5, patch.bounds['maxy'].values[0] +0.5])
+        
+        ax.set_xlim([patch.bounds['minx'].values[0] -0.5, patch.bounds['maxx'].values[0] +0.5])
+        ax.set_ylim([patch.bounds['miny'].values[0] -0.5, patch.bounds['maxy'].values[0] +0.5])
         if title:
             ax.set_title(title, size = 20)
 
         if save:
             print('saving to', file)
             plt.savefig(file, dpi=300)
-        plt.show()
+        # plt.show()
+        return plt
         
         
    
@@ -178,13 +186,19 @@ class NetworkHeatmaps():
                            file = self.folder + str(prov) + self.suffix + ".png")
             
 
-    def framePlot(self, df, title=None, save=False, file = "customplot.png"):
+    def framePlot(self, df, underlay=None, title=None, save=False, file ="customplot.png", alpha = 0.5, linewidth = 1, figsize = (5,5)):
         '''
         Plots anything you want, just  need to pass it a geopandas dataframe
         defining the shapefile of your data
         '''
- 
-        self.makePlot(self.formap,df, save=save, title=title, file=file)
+        self.makePlot(self.for_map, 
+                      df, 
+                      underlay=underlay, 
+                      save=save, 
+                      title=title, 
+                      file=file,
+                      alpha = alpha, linewidth = linewidth, figsize = figsize)
+
 
         
         

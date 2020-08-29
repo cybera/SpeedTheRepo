@@ -9,7 +9,7 @@ Currently, this repository contains two [Jupyter](https://jupyter.org/) notebook
 1. `networkheatmap.ipynb` that joins data and creates a heatmap; and
 2. `notebooksHeatmapTutorialNotebook.ipynb` that joins data, creates a heatmap and demonstrates how to add an underlay (e.g. postal code boundaries) to the heatmap.  
 
-Both notebooks **1** and **2** will generate broadband internet speed heatmaps but **2** explains in more detail the steps involved and also shows you how to add an underlay onto the heatmap which can be customized to the data you may have / want. We recommend you start with **2**.  
+Notebooks **1** and **2** will generate broadband internet speed heatmaps but **2** explains in more detail the steps involved and also shows you how to add an underlay onto the heatmap which can be customized to the data you may have / want. We recommend you start with **2**.  
 
 If you've never worked with Jupyter notebooks before you'll want to download and install it on your system first following the instructions "Getting started with the classic Jupyter Notebook" [here](https://jupyter.org/install). You will also need to make sure you have the right Python libraries on your system before running the notebook(s).
 
